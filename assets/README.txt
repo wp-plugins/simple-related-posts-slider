@@ -14,7 +14,7 @@ Simple Related Posts Slider is a very simple plugin that adds a slider containin
 
 Simple Related Posts Slider automatically adds a slider containing related articles to the bottom of your Wordpress single posts. Depending on how many related articles it finds, it will cycle through up to 12 articles, with a maximum of three articles visible at once. 
 
-View a working demo at http://simple-related-posts.com.
+View a working demo at http://simple-related-posts.com/demo .
 
 It is built to work with the "Featured Image" feature of Wordpress and only displays related posts that have a featured image set. The title is displayed below the featured image.
 
@@ -54,4 +54,4 @@ If you do not want the slider to be automatically added, there is a menu option 
 
 == View demo ==
 
-View a working demo at http://simple-related-posts.com
+View a working demo at http://simple-related-posts.com/demo
