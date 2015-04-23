@@ -21,7 +21,7 @@ The slider is fully responsive and the height and width are automatically determ
 Simple Related Posts Slider finds related posts by first checking to see if your posts are using the tags feature of Wordpress. If you're not using tags, it then looks through related categories and uses categories instead. 
 
 
-<h5>Developer Option</h5>
+Developer Option
 
 If you do not want the slider to be automatically added, there is a menu option in Settings -> Simple Related Posts Slider to disable it and manually insert this code yourself into the appropriate template file `<?php srps()?>`.
 
@@ -31,7 +31,7 @@ If you do not want the slider to be automatically added, there is a menu option 
 == Installation ==
 
 
-1. Upload `simple-related-posts-slider.php` to the `/wp-content/plugins/` directory or through the Wordpress menu using Plugins -> Add New -> Upload
+1. Upload `simple-related-posts-slider.zip` to the `/wp-content/plugins/` directory or through the Wordpress menu using Plugins -> Add New -> Upload
 2. Activate the plugin through the 'Plugins' menu in WordPress
 3. That's all! (Optional) If you'd like to manually insert the plugin, go to Settings -> Simple Related Posts Slider, check the box, and save. Now you can insert the plugin wherever you want using the snippet `<?php srps();?>`.
 
