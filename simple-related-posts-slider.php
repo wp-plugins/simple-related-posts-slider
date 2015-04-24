@@ -106,7 +106,7 @@ class Simple_Related_Posts_Slider {
 
 		$html .= '</div><div class="clearfix"></div></div>';
 
-		echo $html;
+		return $html;
 	}
 
 	public function load_resources() {
@@ -245,16 +245,16 @@ class Simple_Related_Posts_Slider_Admin {
 function add_slider_automatically($the_content){
 	$options = get_option( 'srps_settings' );
 	if( !isset( $options['srps_checkbox_field'] ) ) {
-		if ( is_single() ){
-			echo $the_content;
+		if ( is_single() && is_main_query() ){
 			$myslider = new Simple_Related_Posts_Slider();
-			$myslider->generate_html();
+			$the_content = $the_content . $myslider->generate_html();
+			return $the_content;
 		} else {
-			echo $the_content;
+			return $the_content;
 		}
 	}
 	else {
-		echo $the_content;
+		return $the_content;
 	}
 }
 add_filter('the_content', 'add_slider_automatically');
@@ -265,7 +265,7 @@ function srps(){
 
 	if( isset( $options['srps_checkbox_field'] ) ) {
 		$myslider = new Simple_Related_Posts_Slider();
-		$myslider->generate_html();
+		echo $myslider->generate_html();
 	}
 	
 }

@@ -4,7 +4,7 @@ Donate link: http://josiahmann.com/
 Tags: related posts, related articles, related posts slider, simple related posts, related, simple related posts slider, related post thumbnails, related article thumbnails, wordpress related posts plugin
 Requires at least: 3.0.1
 Tested up to: 4.1
-Stable tag: 1
+Stable tag: 1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -49,8 +49,18 @@ If you do not want the slider to be automatically added, there is a menu option 
 
 == Changelog ==
 
+= 1.1 =
+* Fixed bug causing Captions to display improperly. 
+
 = 1.0 =
 * Initial Release.
+
+
+== Upgrade Notice ==
+
+= 1.1 =
+
+Fixed bug causing Captions to display improperly. Please upgrade to avoid this issue.
 
 == View demo ==
 
