@@ -1,14 +1,14 @@
 <?php
 /**
  * @package Simple_Related_Posts_Slider
- * @version 1.0
+ * @version 1.2
  */
 /*
 Plugin Name: Simple Related Posts Slider 
 Plugin URI: http://simple-related-posts.com/
 Description: Simple Related Posts Slider is a very simple plugin that adds a slider containing related articles to the bottom of your wordpress posts. 
 Author: Josiah Mann
-Version: 1.0
+Version: 1.2
 Author URI: http://josiahmann.com/
 */
 
@@ -31,20 +31,21 @@ class Simple_Related_Posts_Slider {
 		return $src[0];
 	}
 
+
+
 	public function generate_html() {
 
 		global $post;
+		$options = get_option( 'srps_settings' );
 		$tags = wp_get_post_tags($post->ID);
+		$i = 0;
 		if ($tags) {
-			$tag_ids = array();
-			$html = '<div class="srps" id="srps_tags"><h4 class="srps_title">Related Articles</h4>';
-			$html .= '<div class="srps_slider">';
-
-			
+			$tag_ids = array();			
 			foreach($tags as $individual_tag) $tag_ids[] = $individual_tag->term_id;
 				$related = array(
 					'tag__in' => $tag_ids,
 					'post__not_in' => array($post->ID),
+					'post_type' => 'post',
 					'posts_per_page'=>12, // Number of related posts that will be shown.
 					'ignore_sticky_posts'=>1,
 				    'meta_key'    => '_thumbnail_id',
@@ -56,18 +57,24 @@ class Simple_Related_Posts_Slider {
 			if ( $srp_query ->have_posts() ) {
 				while ( $srp_query->have_posts() ) {
 					$srp_query->the_post();
+					if( $i < 1){
+						$html = '<div class="srps" id="srps_cats">';
+						if( isset( $options['srps_title'] ) ) { 
+							$html .= '<h4 class="srps_title">' . $options['srps_title'] . '</h4>';
+						} 
+						$html .= '<div class="srps_slider">';
+					}
 					$html .= '<div class="srps_article">';
 					$html .= '<a href="' . get_the_permalink() . '">';
 					$html .= '<div class="srps_thumb" style="background-image:url(' . $this->get_thumbnail_as_bg() . ');"></div></a>';
 					$html .= '<h5 class="srps_article_title"><a class="srps_article_title_link" href="' . get_the_permalink() . '">' . get_the_title() . '</a></h5><br/>';
 					$html .= '</div>';
+					$i++;
 				}
 			} 
 			/* Restore original Post Data */
 			wp_reset_query();
 		} else {
-			$html = '<div class="srps" id="srps_cats"><h4 class="srps_title">Related Articles</h4>';
-			$html .= '<div class="srps_slider">';
 			
 			$categories = get_the_category();
 			if ($categories){
@@ -80,6 +87,7 @@ class Simple_Related_Posts_Slider {
 			$related = array(
 					'cat' => $cat_ID,
 					'post__not_in' => array($post->ID),
+					'post_type' => 'post',
 					'posts_per_page'=>12, // Number of related posts that will be shown.
 					'ignore_sticky_posts'=>1,
 				    'meta_key'    => '_thumbnail_id',
@@ -91,12 +99,19 @@ class Simple_Related_Posts_Slider {
 			if ( $srp_query2->have_posts() ) {
 				while ( $srp_query2->have_posts() ) {
 					$srp_query2->the_post();
+					if( $i < 1){
+						$html = '<div class="srps" id="srps_cats">';
+						if( isset( $options['srps_title'] ) ) { 
+							$html .= '<h4 class="srps_title">' . $options['srps_title'] . '</h4>';
+						} 
+						$html .= '<div class="srps_slider">';
+					}
 					$html .= '<div class="srps_article">';
 					$html .= '<a href="' . get_the_permalink() . '">';
 					$html .= '<div class="srps_thumb" style="background-image:url(' . $this->get_thumbnail_as_bg() . ');"></div></a>';
 					$html .= '<h5 class="srps_article_title"><a class="srps_article_title_link" href="' . get_the_permalink() . '">' . get_the_title() . '</a></h5><br/>';
 					$html .= '</div>';	
-
+					$i++;
 				}
 			} 
 			/* Restore original Post Data */
@@ -169,7 +184,14 @@ class Simple_Related_Posts_Slider_Admin {
 			'pluginPage', // Page
 			'srps_pluginPage_section' // Section this setting is attached to
 		);
-
+		
+		add_settings_field( 
+			'srps_title', // ID
+			__( 'Title to display above related posts (if any).', 'wordpress' ), // Title
+			array($this,'srps_title_callback'),  // Callback Function
+			'pluginPage', // Page
+			'srps_pluginPage_section' // Section this setting is attached to
+		);
 
 	}
 
@@ -177,10 +199,8 @@ class Simple_Related_Posts_Slider_Admin {
 	public function srps_checkbox_field_render(  ) { 
 
 		$options = get_option( 'srps_settings' );?>
-		<label><input type='checkbox' name='srps_settings[srps_checkbox_field]' <?php if( isset( $options['srps_checkbox_field'] ) ) {  checked( $options['srps_checkbox_field'], 1 ); }?> value='1'>  Simple Related Posts Slider is automatically added by default to the bottom of your single Wordpress posts.<br> If you would like to add it manually instead, check here and then save your changes.</label>
-		
+		<label><input type='checkbox' name='srps_settings[srps_checkbox_field]' <?php if( isset( $options['srps_checkbox_field'] ) ) {  checked( $options['srps_checkbox_field'], 1 ); }?> value='1'>  Simple Related Posts Slider is automatically added by default to the bottom of your single Wordpress posts.<br> If you would like to add it manually instead, check here and then save your changes.</label>		
 		<?php
-		$options = get_option( 'srps_settings' );
 		if( isset( $options['srps_checkbox_field'] ) ) { ?>
 
 			<script type="text/javascript">
@@ -206,6 +226,12 @@ class Simple_Related_Posts_Slider_Admin {
 
 	}
 
+
+	public function srps_title_callback(  ) { 
+			$options = get_option( 'srps_settings' );?>
+			<label><input type='text' class="large" name='srps_settings[srps_title]' value="<?php if( isset( $options['srps_title'] ) ) { echo  $options['srps_title']; }?>" placeholder="Related Articles"> </label>
+	<?php
+	}
 
 	public function srps_settings_section_callback(  ) { 
 
@@ -245,7 +271,7 @@ class Simple_Related_Posts_Slider_Admin {
 function add_slider_automatically($the_content){
 	$options = get_option( 'srps_settings' );
 	if( !isset( $options['srps_checkbox_field'] ) ) {
-		if ( is_single() && is_main_query() ){
+		if ( is_singular('post') && is_main_query() ){
 			$myslider = new Simple_Related_Posts_Slider();
 			$the_content = $the_content . $myslider->generate_html();
 			return $the_content;

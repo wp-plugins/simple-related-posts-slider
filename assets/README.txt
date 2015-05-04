@@ -4,7 +4,7 @@ Donate link: http://josiahmann.com/
 Tags: related posts, related articles, related posts slider, simple related posts, related, simple related posts slider, related post thumbnails, related article thumbnails, wordpress related posts plugin
 Requires at least: 3.0.1
 Tested up to: 4.1
-Stable tag: 1.1
+Stable tag: 1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
