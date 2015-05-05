@@ -1,14 +1,14 @@
 <?php
 /**
  * @package Simple_Related_Posts_Slider
- * @version 1.2
+ * @version 1.21
  */
 /*
 Plugin Name: Simple Related Posts Slider 
 Plugin URI: http://simple-related-posts.com/
 Description: Simple Related Posts Slider is a very simple plugin that adds a slider containing related articles to the bottom of your wordpress posts. 
 Author: Josiah Mann
-Version: 1.2
+Version: 1.21
 Author URI: http://josiahmann.com/
 */
 
@@ -52,13 +52,13 @@ class Simple_Related_Posts_Slider {
 				);
 
 			$srp_query = new WP_Query($related);
+			$html = '<div class="srps" id="srps_cats">';
 
 			// The Loop
 			if ( $srp_query ->have_posts() ) {
 				while ( $srp_query->have_posts() ) {
 					$srp_query->the_post();
 					if( $i < 1){
-						$html = '<div class="srps" id="srps_cats">';
 						if( isset( $options['srps_title'] ) ) { 
 							$html .= '<h4 class="srps_title">' . $options['srps_title'] . '</h4>';
 						} 
@@ -71,6 +71,7 @@ class Simple_Related_Posts_Slider {
 					$html .= '</div>';
 					$i++;
 				}
+				$html .= '</div><div class="clearfix"></div></div>';
 			} 
 			/* Restore original Post Data */
 			wp_reset_query();
@@ -95,12 +96,12 @@ class Simple_Related_Posts_Slider {
 
 			$srp_query2 = new WP_Query($related);
 
+			$html = '<div class="srps" id="srps_cats">';
 			// The Loop
 			if ( $srp_query2->have_posts() ) {
 				while ( $srp_query2->have_posts() ) {
 					$srp_query2->the_post();
 					if( $i < 1){
-						$html = '<div class="srps" id="srps_cats">';
 						if( isset( $options['srps_title'] ) ) { 
 							$html .= '<h4 class="srps_title">' . $options['srps_title'] . '</h4>';
 						} 
@@ -113,13 +114,13 @@ class Simple_Related_Posts_Slider {
 					$html .= '</div>';	
 					$i++;
 				}
+				$html .= '</div><div class="clearfix"></div></div>';
 			} 
 			/* Restore original Post Data */
 			wp_reset_query();
 
 		}
 
-		$html .= '</div><div class="clearfix"></div></div>';
 
 		return $html;
 	}
